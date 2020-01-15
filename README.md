@@ -8,6 +8,7 @@ should have a modern design. They should also be able to sort the albums.
 I tried to make the app myself but I am too busy. Recently released albums 
 should also be noted. Thanks.
 ```
+![](./docs/mockup.jpg)
 
 Your task is to checkout the provided code and provide a submission that accomplishes the features the client is requesting. Beyond the functional requirements, we will also be considering the following areas (among others) of code quality:
 
