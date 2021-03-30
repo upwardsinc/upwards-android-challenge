@@ -44,7 +44,7 @@ interface NetworkComponent {
         fun iTunesApi(): iTunesApi = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson()))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .baseUrl("https://itunes.apple.com")
+            .baseUrl("https://rss.itunes.apple.com")
             .client(okHttpClient(httpLoggingInterceptor()))
             .build()
             .create(iTunesApi::class.java)
