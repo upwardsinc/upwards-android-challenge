@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .map { response ->
                 response.getAsJsonObject("feed")
-                    .getAsJsonArray("entry")
+                    .getAsJsonArray("results")
                     .map { it.asJsonObject }
             }
             .subscribe(Consumer {
@@ -85,18 +85,13 @@ class MainActivity : AppCompatActivity() {
 
         fun onBind(album: JsonObject) {
             val coverUrl = album
-                .getAsJsonArray("im:image")
-                .last()
-                .asJsonObject
-                .getAsJsonPrimitive("label")
+                .getAsJsonPrimitive("artworkUrl100")
                 .asString
             val title = album
-                .getAsJsonObject("im:name")
-                .getAsJsonPrimitive("label")
+                .getAsJsonPrimitive("name")
                 .asString
             val artist = album
-                .getAsJsonObject("im:artist")
-                .getAsJsonPrimitive("label")
+                .getAsJsonPrimitive("artistName")
                 .asString
 
             val ivCover: ImageView = itemView.findViewById(R.id.ivCover)
