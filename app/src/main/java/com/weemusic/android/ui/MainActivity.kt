@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.TableLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonObject
@@ -60,8 +63,7 @@ class MainActivity : AppCompatActivity() {
             .subscribe(Consumer {
                 adapter = AlbumsAdapter(it)
                 rvFeed.adapter = adapter
-                rvFeed.layoutManager =
-                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                rvFeed.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
             })
     }
 
@@ -103,4 +105,6 @@ class MainActivity : AppCompatActivity() {
             tvArtist.text = artist
         }
     }
+
+    fun sort(view: View) {}
 }
