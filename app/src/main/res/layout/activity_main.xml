@@ -26,15 +26,6 @@
                 android:layout_gravity="center"
                 android:textSize="20sp"/>
 
-            <ImageView
-                android:id="@+id/menu_changeLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_sort_by_size"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:onClick="sort"
-                android:contentDescription="@string/content_description_sort" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 

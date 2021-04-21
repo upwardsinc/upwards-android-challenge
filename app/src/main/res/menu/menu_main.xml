@@ -3,8 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/sort_new_to_old"
+        android:orderInCategory="1"
+        android:title="Sort new to old"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/sort_old_to_new"
+        android:icon="@android:drawable/ic_menu_mylocation"
+        android:orderInCategory="2"
+        android:title="Sort old to new"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/sort_alphabetically"
+        android:icon="@android:drawable/ic_menu_mylocation"
+        android:orderInCategory="2"
+        android:title="Sort alphabetically"
         app:showAsAction="never" />
 </menu>

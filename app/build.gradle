@@ -33,7 +33,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava2_version"
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation "com.squareup.okhttp3:okhttp:$ok_http_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

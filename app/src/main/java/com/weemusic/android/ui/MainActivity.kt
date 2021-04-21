@@ -1,16 +1,13 @@
 package com.weemusic.android.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.GridLayout
+import android.util.Log
+import android.view.*
 import android.widget.ImageView
-import android.widget.TableLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
@@ -26,6 +23,9 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
+
+private const val TAG = "MainActivity"
+
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var getTopAlbumsUseCase: GetTopAlbumsUseCase
@@ -33,8 +33,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var topAlbumsDisposable: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate started")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val networkComponent = DaggerNetworkComponent.create()
         val domainComponent = DaggerDomainComponent
@@ -47,9 +50,12 @@ class MainActivity : AppCompatActivity() {
             .domainComponent(domainComponent)
             .build()
             .inject(this)
+
+        Log.d(TAG, "onCreate finished")
     }
 
     override fun onStart() {
+        Log.d(TAG, "onStart started")
         super.onStart()
         topAlbumsDisposable = getTopAlbumsUseCase
             .perform()
@@ -65,15 +71,18 @@ class MainActivity : AppCompatActivity() {
                 rvFeed.adapter = adapter
                 rvFeed.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
             })
+        Log.d(TAG, "onStart finished")
     }
 
     class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumsViewHolder {
+            Log.d("AlbumsAdapter", "onCreateViewHolder started")
             val itemView = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.album_view_holder, parent, false)
 
+            Log.d("AlbumsAdapter", "onCreateViewHolder finished, returns $itemView ")
             return AlbumsViewHolder(itemView)
         }
 
@@ -86,6 +95,7 @@ class MainActivity : AppCompatActivity() {
     class AlbumsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun onBind(album: JsonObject) {
+            Log.d("AlbumsViewHolder", "onBind started")
             val coverUrl = album
                 .getAsJsonPrimitive("artworkUrl100")
                 .asString
@@ -103,8 +113,40 @@ class MainActivity : AppCompatActivity() {
             Picasso.with(itemView.context).load(coverUrl).into(ivCover)
             tvTitle.text = title
             tvArtist.text = artist
+            Log.d("AlbumsViewHolder", "onBind finished")
         }
     }
 
-    fun sort(view: View) {}
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        Log.d(TAG, "onCreateOptionsMenu started")
+        // Inflate the menu; this adds items to the action bar
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.sort_new_to_old -> {
+                Log.d(TAG, "onOptionsItemSelected: sort_new_to_old")
+                Toast.makeText(this@MainActivity, "New to old", Toast.LENGTH_LONG).show()
+                return true
+            }
+            R.id.sort_old_to_new -> {
+                Log.d(TAG, "onOptionsItemSelected: sort_old_to_new")
+                Toast.makeText(this@MainActivity, "Old to New", Toast.LENGTH_LONG).show()
+                return true
+            }
+            R.id.sort_alphabetically -> {
+                Log.d(TAG, "onOptionsItemSelected: sort_alphabetically")
+                Toast.makeText(this@MainActivity, "Alphabetically", Toast.LENGTH_LONG).show()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
 }
