@@ -6,11 +6,11 @@
     <string name="content_description_album_cover_image">Album cover image</string>
 
     //toolbar after sorting
-    <string name="sorted_new_to_old">Albums sorted new to old</string>
-    <string name="sorted_old_to_new">Albums sorted old to new</string>
-    <string name="sorted_alphabetically_artist">Albums sorted by artist</string>
-    <string name="sorted_alphabetically_title">Albums sorted by album title</string>
-    <string name="sorted_popularity">Albums sorted by popularity</string>
+    <string name="sorted_new_to_old">Top albums sorted new to old</string>
+    <string name="sorted_old_to_new">Top albums sorted old to new</string>
+    <string name="sorted_alphabetically_artist">Top albums sorted by artist</string>
+    <string name="sorted_alphabetically_title">Top albums sorted by album title</string>
+    <string name="sorted_popularity">Top albums sorted by popularity</string>
     <string name="sorted_price_ascending">Albums sorted by price low to high</string>
     <string name="sorted_price_descending">Albums sorted by price high to low</string>
 

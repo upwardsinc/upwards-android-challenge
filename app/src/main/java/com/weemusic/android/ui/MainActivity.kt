@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.JsonObject
@@ -21,8 +22,10 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-//TODO: create class to separate sorting implementation
-
+//TODO: create class to separate sorting implementation (?)
+//TODO: add tag "new" to anything less than 1 month
+//TODO: add links to iTunes
+//TODO: create sorting dialog(?)
 
 private const val TAG = "MainActivity"
 
@@ -101,33 +104,48 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.sort_new_to_old -> {
                 Log.d(TAG, "onOptionsItemSelected: sort_new_to_old was clicked")
-                sortNewToOld(adapter)
+                albumsList.sortWith(compareByDescending { it.releaseDate })
+                sortUpdater(getString(R.string.sorted_new_to_old))
                 Toast.makeText(this@MainActivity, R.string.sorted_new_to_old, Toast.LENGTH_LONG)
                     .show()
             }
             R.id.sort_old_to_new -> {
                 Log.d(TAG, "onOptionsItemSelected: sort_old_to_new was clicked")
-                sortOldToNew(adapter)
+                albumsList.sortWith(compareBy { it.releaseDate })
+                sortUpdater(getString(R.string.sorted_old_to_new))
                 Toast.makeText(this@MainActivity, R.string.sorted_old_to_new, Toast.LENGTH_LONG)
                     .show()
                 return true
             }
             R.id.sort_alphabetically_artist -> {
                 Log.d(TAG, "onOptionsItemSelected: sort_alphabetically_artist")
-                sortAlphabeticallyArtist(adapter)
-                Toast.makeText(this@MainActivity, R.string.sorted_alphabetically_artist, Toast.LENGTH_LONG).show()
+                albumsList.sortWith(compareBy { it.artist })
+                sortUpdater(getString(R.string.sorted_alphabetically_artist))
+                Toast.makeText(
+                    this@MainActivity,
+                    R.string.sorted_alphabetically_artist,
+                    Toast.LENGTH_LONG
+                ).show()
                 return true
             }
             R.id.sort_alphabetically_title -> {
                 Log.d(TAG, "onOptionsItemSelected: sort_alphabetically_title")
-                sortAlphabeticallyTitle(adapter)
-                Toast.makeText(this@MainActivity, R.string.sorted_alphabetically_title, Toast.LENGTH_LONG).show()
+                albumsList.sortWith(compareBy { it.title })
+                sortUpdater(getString(R.string.sorted_alphabetically_title))
+                Toast.makeText(
+                    this@MainActivity,
+                    R.string.sorted_alphabetically_title,
+                    Toast.LENGTH_LONG
+                ).show()
                 return true
             }
             R.id.sort_popularity -> {
                 Log.d(TAG, "onOptionsItemSelected: sort_popularity")
-                sortPopularity()
-                Toast.makeText(this@MainActivity, R.string.sorted_popularity, Toast.LENGTH_LONG).show()
+                sortDrop()
+                adapter.notifyDataSetChanged()
+                tvToolbar.text = getString(R.string.sorted_popularity)
+                Toast.makeText(this@MainActivity, R.string.sorted_popularity, Toast.LENGTH_LONG)
+                    .show()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -138,41 +156,16 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun sortNewToOld(adapter: AlbumsAdapter) {
-        Log.d(TAG, "sortNewToOld started")
-        albumsList.sortWith(compareByDescending { it.releaseDate })
-        Log.d(TAG, "sortNewToOld albumsList was sorted $albumsList")
+    private fun sortUpdater(textForToolbar: String) {
+        Log.d(TAG, "sortUpdater started")
         adapter.notifyDataSetChanged()
-        tvToolbar.text = getString(R.string.sorted_new_to_old)
+        tvToolbar.text = textForToolbar
         Log.d(TAG, "sortNewToOld adapter was notifyDataSetChanged")
     }
 
-    private fun sortOldToNew(adapter: AlbumsAdapter) {
-        Log.d(TAG, "sortOldToNew started")
-        albumsList.sortWith(compareBy{it.releaseDate})
-        adapter.notifyDataSetChanged()
-        tvToolbar.text = getString(R.string.sorted_old_to_new)
-    }
-
-    private fun sortAlphabeticallyArtist(adapter: AlbumsAdapter) {
-        Log.d(TAG, "sortAlphabeticallyArtist started")
-        albumsList.sortWith(compareBy{it.artist})
-        adapter.notifyDataSetChanged()
-        tvToolbar.text = getString(R.string.sorted_alphabetically_artist)
-    }
-
-    private fun sortAlphabeticallyTitle(adapter: AlbumsAdapter) {
-        Log.d(TAG, "sortAlphabeticallyTitle started")
-        albumsList.sortWith(compareBy{it.title})
-        adapter.notifyDataSetChanged()
-        tvToolbar.text = getString(R.string.sorted_alphabetically_title)
-    }
-
-    private fun sortPopularity() {
-        Log.d(TAG, "sortPopularity started")
+    private fun sortDrop() {
         albumsList = ArrayList(albumsListInitial)
         adapter.setAlbumList(albumsList)
-        adapter.notifyDataSetChanged()
-        tvToolbar.text = getString(R.string.sorted_popularity)
     }
+
 }
