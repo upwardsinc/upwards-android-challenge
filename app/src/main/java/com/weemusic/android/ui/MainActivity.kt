@@ -1,5 +1,6 @@
 package com.weemusic.android.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -19,10 +20,13 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.album_view_holder.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 //TODO: create class to separate sorting implementation (?)
-//TODO: add tag "new" to anything less than 1 month
 //TODO: restore activity after phone rotation
 //TODO: add links to iTunes
 //TODO: create sorting dialog(?)
@@ -84,6 +88,8 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, "onStart finished")
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d(TAG, "onCreateOptionsMenu started")
