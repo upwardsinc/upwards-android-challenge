@@ -1,11 +1,7 @@
 package com.weemusic.android.ui
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -22,16 +18,9 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.album_view_holder.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
-//TODO: create class to separate sorting implementation (?)
-//TODO: restore activity after phone rotation
-//TODO: add links to iTunes
-//TODO: create sorting dialog(?)
-
-private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
     @Inject
@@ -44,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private var albumsListInitial = ArrayList<Album>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate started")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -62,24 +50,21 @@ class MainActivity : AppCompatActivity() {
             .build()
             .inject(this)
 
+        // updates activity
         swipeLayout = findViewById(R.id.swipeContainer)
         swipeLayout.setOnRefreshListener {
             recreate()
             swipeLayout.isRefreshing = false
         }
-
-        Log.d(TAG, "onCreate finished")
     }
 
     override fun onStart() {
-        Log.d(TAG, "onStart started")
         super.onStart()
         topAlbumsDisposable = getTopAlbumsUseCase
             .perform()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { response ->
-                Log.d(TAG, "onStart: getting response to fill a map")
                 response.getAsJsonObject("feed")
                     .getAsJsonArray("results")
                     .map { it.asJsonObject }
@@ -92,84 +77,57 @@ class MainActivity : AppCompatActivity() {
                 rvFeed.adapter = adapter
                 rvFeed.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
             })
-
-        Log.d(TAG, "onStart finished")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        Log.d(TAG, "onCreateOptionsMenu started")
-        // add sorting items to the action bar
+        // adds sorting items to the action bar
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
-        Log.d(TAG, "onCreateOptionsMenu finished")
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d(TAG, "onOptionsItemSelected started")
+        // sorts albums when user selects sorting method in menu
         when (item.itemId) {
             R.id.sort_new_to_old -> {
-                Log.d(TAG, "onOptionsItemSelected: sort_new_to_old was clicked")
                 albumsList.sortWith(compareByDescending { it.releaseDate })
                 sortUpdater(getString(R.string.sorted_new_to_old))
-                Toast.makeText(this@MainActivity, R.string.sorted_new_to_old, Toast.LENGTH_LONG)
-                    .show()
             }
             R.id.sort_old_to_new -> {
-                Log.d(TAG, "onOptionsItemSelected: sort_old_to_new was clicked")
                 albumsList.sortWith(compareBy { it.releaseDate })
                 sortUpdater(getString(R.string.sorted_old_to_new))
-                Toast.makeText(this@MainActivity, R.string.sorted_old_to_new, Toast.LENGTH_LONG)
-                    .show()
                 return true
             }
             R.id.sort_alphabetically_artist -> {
-                Log.d(TAG, "onOptionsItemSelected: sort_alphabetically_artist")
                 albumsList.sortWith(compareBy { it.artist })
                 sortUpdater(getString(R.string.sorted_alphabetically_artist))
-                Toast.makeText(
-                    this@MainActivity,
-                    R.string.sorted_alphabetically_artist,
-                    Toast.LENGTH_LONG
-                ).show()
                 return true
             }
             R.id.sort_alphabetically_title -> {
-                Log.d(TAG, "onOptionsItemSelected: sort_alphabetically_title")
                 albumsList.sortWith(compareBy { it.title })
                 sortUpdater(getString(R.string.sorted_alphabetically_title))
-                Toast.makeText(
-                    this@MainActivity,
-                    R.string.sorted_alphabetically_title,
-                    Toast.LENGTH_LONG
-                ).show()
                 return true
             }
             R.id.sort_popularity -> {
-                Log.d(TAG, "onOptionsItemSelected: sort_popularity")
                 sortDrop()
                 adapter.notifyDataSetChanged()
                 tvToolbar.text = getString(R.string.sorted_popularity)
-                Toast.makeText(this@MainActivity, R.string.sorted_popularity, Toast.LENGTH_LONG)
-                    .show()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
 
-        Log.d(TAG, "onOptionsItemSelected finished")
-
         return super.onOptionsItemSelected(item)
     }
 
     private fun sortUpdater(textForToolbar: String) {
-        Log.d(TAG, "sortUpdater started")
+        // updates card views and toolbar according to sorting
         adapter.notifyDataSetChanged()
         tvToolbar.text = textForToolbar
-        Log.d(TAG, "sortNewToOld adapter was notifyDataSetChanged")
     }
 
     private fun sortDrop() {
+        // returns album list to presorted state
         albumsList = ArrayList(albumsListInitial)
         adapter.setAlbumList(albumsList)
     }

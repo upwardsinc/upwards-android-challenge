@@ -18,9 +18,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
-class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsViewHolder>() {
-
-    private val TAG = "AlbumsAdapter"
+class AlbumsAdapter(private val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsViewHolder>() {
 
     private var albumsListPresentation = ArrayList<Album>()
 
@@ -29,12 +27,10 @@ class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumsViewHolder {
-        Log.d("AlbumsAdapter", "onCreateViewHolder started")
         val itemView = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.album_view_holder, parent, false)
 
-        Log.d("AlbumsAdapter", "onCreateViewHolder finished, returns $itemView ")
         return AlbumsViewHolder(itemView)
     }
 
@@ -44,7 +40,7 @@ class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsV
         holder.onBind(albumsListPresentation[position])
 
     fun createAlbumList(): ArrayList<Album> {
-        Log.d("AlbumsAdapter", "createAlbumList called")
+        // populates albumsList
         for (album in albums) {
             val albumModel = Album(
                 album.getAsJsonPrimitive("id").asInt,
@@ -55,23 +51,20 @@ class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsV
             )
             albumsListPresentation.add(albumModel)
         }
-        Log.d("AlbumsAdapter", "createAlbumList finished, returns $albumsListPresentation ")
         return albumsListPresentation
     }
 }
 
 class AlbumsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val TAG = "AlbumsViewHolder"
-
     fun onBind(albumsList: Album) {
-        Log.d("AlbumsViewHolder", "onBind started")
 
         val ivCover: ImageView = itemView.findViewById(R.id.ivCover)
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         val tvArtist: TextView = itemView.findViewById(R.id.tvArtist)
         val ivTagNew: ImageView = itemView.findViewById(R.id.ivTagNew)
 
+        // adds tag "new" if album was released less than 30 days ago
         if (calcDaysFromRelease(albumsList) < 30) {
             ivTagNew.visibility = View.VISIBLE
         } else ivTagNew.visibility = View.GONE
@@ -85,19 +78,13 @@ class AlbumsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     @SuppressLint("SimpleDateFormat")
     fun calcDaysFromRelease(albumsList: Album): Long {
+        // calculates difference between current date and release date of album
         val df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
         val releaseDate = albumsList.releaseDate
         val currentDate = System.currentTimeMillis()
-        Log.d(TAG, "calcDaysFromRelease: releaseDate = $releaseDate")
-        Log.d(TAG, "calcDaysFromRelease: releaseDate parsed = ${df.parse(releaseDate)}")
-        Log.d(TAG, "calcDaysFromRelease: currentDate = $currentDate")
         val millSecDiff = currentDate - df.parse(releaseDate).time
-        Log.d(TAG, "calcDaysFromRelease: millSecDiff = $millSecDiff")
         val days = TimeUnit.MILLISECONDS.toDays(millSecDiff)
-        Log.d(TAG, "calcDaysFromRelease: days diff = $days")
 
         return days
     }
-
-
 }
