@@ -20,5 +20,6 @@
     <string name="sort_alphabetically_by_artist">Sort alphabetically by artist</string>
     <string name="sort_alphabetically_by_album_title">Sort alphabetically by album title</string>
     <string name="sort_alphabetically_by_popularity">Sort by popularity</string>
+    <string name="tag_new">tag new</string>
 
 </resources>

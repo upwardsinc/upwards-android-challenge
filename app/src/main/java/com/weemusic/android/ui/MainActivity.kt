@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.JsonObject
@@ -24,6 +23,7 @@ import javax.inject.Inject
 
 //TODO: create class to separate sorting implementation (?)
 //TODO: add tag "new" to anything less than 1 month
+//TODO: restore activity after phone rotation
 //TODO: add links to iTunes
 //TODO: create sorting dialog(?)
 
@@ -75,19 +75,14 @@ class MainActivity : AppCompatActivity() {
             }
             .subscribe(Consumer {
                 albumListObjects = it
-                createAdapter()
+                adapter = AlbumsAdapter(albumListObjects)
+                albumsList = adapter.createAlbumList()
+                albumsListInitial = ArrayList(albumsList)
                 rvFeed.adapter = adapter
                 rvFeed.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
             })
 
         Log.d(TAG, "onStart finished")
-    }
-
-    fun createAdapter() {
-        adapter = AlbumsAdapter(albumListObjects)
-        albumsList = adapter.createAlbumList()
-        albumsListInitial = ArrayList(albumsList)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
