@@ -1,12 +1,12 @@
 package com.weemusic.android.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.JsonObject
 import com.weemusic.android.R
 import com.weemusic.android.adapter.AlbumsAdapter
@@ -21,9 +21,7 @@ import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.album_view_holder.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.concurrent.TimeUnit
+import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
 //TODO: create class to separate sorting implementation (?)
@@ -36,11 +34,12 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var getTopAlbumsUseCase: GetTopAlbumsUseCase
+    var albumsList = ArrayList<Album>()
     private lateinit var adapter: AlbumsAdapter
     private lateinit var topAlbumsDisposable: Disposable
     private lateinit var albumListObjects: List<JsonObject>
-    var albumsList = ArrayList<Album>()
-    var albumsListInitial = ArrayList<Album>()
+    private lateinit var swipeLayout: SwipeRefreshLayout
+    private var albumsListInitial = ArrayList<Album>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate started")
@@ -60,6 +59,12 @@ class MainActivity : AppCompatActivity() {
             .domainComponent(domainComponent)
             .build()
             .inject(this)
+
+        swipeLayout = findViewById(R.id.swipeContainer)
+        swipeLayout.setOnRefreshListener {
+            recreate()
+            swipeLayout.isRefreshing = false
+        }
 
         Log.d(TAG, "onCreate finished")
     }
