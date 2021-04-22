@@ -1,6 +1,8 @@
 package com.weemusic.android.ui
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -93,8 +95,6 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, "onStart finished")
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d(TAG, "onCreateOptionsMenu started")

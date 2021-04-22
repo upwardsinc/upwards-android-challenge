@@ -1,7 +1,6 @@
 package com.weemusic.android.adapter
 
 import android.annotation.SuppressLint
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import com.google.gson.JsonObject
 import com.squareup.picasso.Picasso
 import com.weemusic.android.R
 import com.weemusic.android.domain.Album
-import kotlinx.android.synthetic.main.album_view_holder.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
