@@ -14,7 +14,11 @@ import com.weemusic.android.domain.Album
 
 class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsViewHolder>() {
 
-    val albumsList = ArrayList<Album>()
+    private var albumsListPresentation = ArrayList<Album>()
+
+    fun setAlbumList(sortedAlbumList: ArrayList<Album>) {
+        albumsListPresentation = sortedAlbumList
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumsViewHolder {
         Log.d("AlbumsAdapter", "onCreateViewHolder started")
@@ -29,7 +33,7 @@ class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsV
     override fun getItemCount(): Int = albums.size
 
     override fun onBindViewHolder(holder: AlbumsViewHolder, position: Int) =
-        holder.onBind(albumsList[position])
+        holder.onBind(albumsListPresentation[position])
 
     fun createAlbumList(): ArrayList<Album> {
         Log.d("AlbumsAdapter", "createAlbumList called")
@@ -41,10 +45,10 @@ class AlbumsAdapter(val albums: List<JsonObject>) : RecyclerView.Adapter<AlbumsV
                 album.getAsJsonPrimitive("artistName").asString,
                 album.getAsJsonPrimitive("releaseDate").asString
             )
-            albumsList.add(albumModel)
+            albumsListPresentation.add(albumModel)
         }
-        Log.d("AlbumsAdapter", "createAlbumList finished, returns $albumsList ")
-        return albumsList
+        Log.d("AlbumsAdapter", "createAlbumList finished, returns $albumsListPresentation ")
+        return albumsListPresentation
     }
 }
 
@@ -60,7 +64,7 @@ class AlbumsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Picasso.with(itemView.context).load(albumsList.image).into(ivCover)
         tvTitle.text = albumsList.title
         tvArtist.text = albumsList.artist
-        
+
         Log.d("AlbumsViewHolder", "onBind finished")
     }
 

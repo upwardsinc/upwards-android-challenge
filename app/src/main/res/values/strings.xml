@@ -4,4 +4,21 @@
     <string name="top_albums">Top Albums</string>
     <string name="content_description_sort">sort albums</string>
     <string name="content_description_album_cover_image">Album cover image</string>
+
+    //toolbar after sorting
+    <string name="sorted_new_to_old">Albums sorted new to old</string>
+    <string name="sorted_old_to_new">Albums sorted old to new</string>
+    <string name="sorted_alphabetically_artist">Albums sorted by artist</string>
+    <string name="sorted_alphabetically_title">Albums sorted by album title</string>
+    <string name="sorted_popularity">Albums sorted by popularity</string>
+    <string name="sorted_price_ascending">Albums sorted by price low to high</string>
+    <string name="sorted_price_descending">Albums sorted by price high to low</string>
+
+    //menu items
+    <string name="sort_new_to_old">Sort new to old</string>
+    <string name="sort_old_to_new">Sort old to new</string>
+    <string name="sort_alphabetically_by_artist">Sort alphabetically by artist</string>
+    <string name="sort_alphabetically_by_album_title">Sort alphabetically by album title</string>
+    <string name="sort_alphabetically_by_popularity">Sort by popularity</string>
+
 </resources>

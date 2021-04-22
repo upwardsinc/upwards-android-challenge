@@ -5,18 +5,31 @@
     <item
         android:id="@+id/sort_new_to_old"
         android:orderInCategory="1"
-        android:title="Sort new to old"
+        android:title="@string/sort_new_to_old"
         app:showAsAction="never" />
     <item
         android:id="@+id/sort_old_to_new"
         android:icon="@android:drawable/ic_menu_mylocation"
         android:orderInCategory="2"
-        android:title="Sort old to new"
+        android:title="@string/sort_old_to_new"
         app:showAsAction="never" />
     <item
-        android:id="@+id/sort_alphabetically"
+        android:id="@+id/sort_alphabetically_artist"
         android:icon="@android:drawable/ic_menu_mylocation"
-        android:orderInCategory="2"
-        android:title="Sort alphabetically"
+        android:orderInCategory="3"
+        android:title="@string/sort_alphabetically_by_artist"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/sort_alphabetically_title"
+        android:icon="@android:drawable/ic_menu_mylocation"
+        android:orderInCategory="4"
+        android:title="@string/sort_alphabetically_by_album_title"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/sort_popularity"
+        android:icon="@android:drawable/ic_menu_mylocation"
+        android:orderInCategory="5"
+        android:title="@string/sort_alphabetically_by_popularity"
+        app:showAsAction="never" />
+
 </menu>
