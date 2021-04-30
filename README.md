@@ -8,7 +8,6 @@ should have a modern design. They should also be able to sort the albums.
 I tried to make the app myself but I am too busy. Recently released albums 
 should also be noted. Thanks.
 
-You can ignore the *price* filter
 For reference here is the api we are using: https://rss.itunes.apple.com/en-us
 ```
 ![](./docs/mockup.jpeg)
