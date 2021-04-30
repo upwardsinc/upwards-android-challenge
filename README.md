@@ -10,7 +10,7 @@ should also be noted. Thanks.
 
 For reference here is the api we are using: https://rss.itunes.apple.com/en-us
 ```
-![](./docs/mockup.jpg)
+![](./docs/mockup.jpeg)
 
 Your task is to checkout the provided code and provide a submission that accomplishes the features the client is requesting. Beyond the functional requirements, we will also be considering the following areas (among others) of code quality:
 
