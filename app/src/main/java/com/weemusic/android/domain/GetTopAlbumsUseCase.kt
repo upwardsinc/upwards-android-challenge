@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 class GetTopAlbumsUseCase @Inject constructor(private val iTunesApi: iTunesApi) {
 
-    fun perform(): Single<JsonObject> = iTunesApi.getTopAlbums(limit = 25)
+    fun perform(): Single<JsonObject> = iTunesApi.getTopAlbums(limit = 10)
 }
